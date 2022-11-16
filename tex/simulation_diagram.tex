@@ -1,0 +1,67 @@
+\documentclass{standalone}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, calc, automata, positioning, fit, quotes}
+
+\tikzstyle{startstop} = [rectangle, rounded corners, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
+\tikzstyle{io} = [trapezium, trapezium left angle=70, trapezium right angle=110, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
+\tikzstyle{process} = [rectangle, minimum width=3cm, minimum height=1cm, text centered, text width=3cm, draw=black, fill=white]
+\tikzstyle{decision} = [diamond, minimum width=3cm, minimum height=1cm, text centered, draw=black, fill=white]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+\tikzstyle{line} = [thick]
+
+\begin{document}
+
+\begin{tikzpicture}[node distance=2cm, auto]
+
+\node (start) [startstop] {Formulación del problema};
+\node (pro1) [process, below of=start] {Establecimiento de objetivos y plan general};
+\node (pro2a) [process, below of=pro1, xshift=-3cm] {Conceptualización del modelo};
+\node (pro2b) [process, below of=pro1, xshift=3cm] {Recopilación de datos};
+\node (pro3) [process, below of=pro2a, xshift=3cm] {Traducción del modelo};
+\node (dec1) [decision, below of=pro3,aspect=2, yshift=0cm] {Verificado?};
+\node (dec2) [decision, below of=dec1,aspect=2, yshift=0cm] {Validado?};
+\node (pro4) [process, below of=dec2, yshift=-0.25] {Diseño experimental};
+\node (pro5) [process, below of=pro4] {Ejecuciones de producción y análisis};
+\node (dec3) [decision, below of=pro5, aspect=2, yshift=0cm] {Más ejecuciones?};
+\node (pro6) [process, below of=dec3, yshift=0cm] {Documentación y reporte};
+\node (stop) [startstop, below of=pro6] {Implementación};
+
+\coordinate [below of=pro1, yshift=1cm] (ur1);
+\coordinate [left of=pro2a] (ur2a);
+\coordinate [right of=pro2b] (ur2b);
+\coordinate [below of=pro2a, xshift=3cm, yshift=1cm] (ur3);
+\coordinate [left of=pro3] (ur4);
+\coordinate [left of=pro4, xshift=-1cm] (ur5);
+\coordinate [right of=pro5, xshift=1cm] (ur6);
+
+\draw [arrow] (start) -- (pro1);
+\draw [arrow] (pro1) -- (ur1);
+\draw [arrow] (ur1) -| (pro2a);
+\draw [arrow] (ur1) -| (pro2b);
+\draw [arrow] (pro2a) |- (ur3);
+\draw [arrow] (pro2b) |- (ur3);
+\draw [arrow] (ur3) -- (pro3);
+\draw [arrow] (pro3) -- (dec1);
+\draw [line] (dec1) -| node [near start] {No} (ur4);
+\draw [arrow] (ur4) -- (pro3);
+\draw [line] (dec2) -| node [very near start, below] {No} (ur2a);
+\draw [arrow] (ur2a) -- (pro2a);
+\draw [line] (dec2) -| node [very near start, below] {No} (ur2b);
+\draw [arrow] (ur2b) -- (pro2b);
+\draw [arrow] (dec1) -- node [near start] {Si} (dec2);
+\draw [arrow] (dec2) -- node [near start] {Si} (pro4);
+\draw [arrow] (pro4) -- (pro5);
+\draw [arrow] (pro5) -- (dec3);
+\draw [line] (dec3) -| node [very near start, below] {Si} (ur5);
+\draw [arrow] (ur5) -- (pro4);
+\draw [line] (dec3) -|node [very near start, below] {Si} (ur6);
+\draw [arrow] (ur6) -- (pro5);
+\draw [arrow] (dec3) -- node [near start] {No} (pro6);
+\draw [arrow] (pro6) -- (stop);
+
+\end{tikzpicture}
+
+
+\end{document}
