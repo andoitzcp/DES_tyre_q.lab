@@ -1,0 +1,215 @@
+% **************************************************************************** %
+%                                                                              %
+%                                                     ::::::::  :::::::::      %
+%    sec_mteorico.tex                                :+:    :+: :+:    :+:     %
+%                                                    +:+        +:+    +:+     %
+%    By: A. Campo <andoitzcp@gmail.com>              +#+        +#++:++#+      %
+%                                                    +#+        +#+            %
+%    Created: 2022/11/22 06:21:10 by A. Campo        #+#    #+# #+#            %
+%    Updated: 2022/12/07 00:26:53 by A. Campo         ########  ###            %
+%                                                                              %
+% **************************************************************************** %
+
+\section{MARCO TEÓRICO}
+
+\subsection{SIMULACIÓN DE EVENTOS DISCRETOS}
+
+Con el avance tecnológico experimentado desde los inicios de la computación,
+nuevas maneras para afrontar la resolución de problemas han surgido,
+que un siglo antes, habrían sido descartadas por su falta de viabilidad.
+La capacidad de calculo y el diseño de inteligencias artificiales,
+a proporcionado las herramientas necesarias
+para solucionar aquellos problemas, que con métodos clásicos,
+definitivamente demasiado complejos para modelar.
+La simulación, hoy en día, es una de las tres metodologías consolidadas,
+en el ámbito científico e ingenieril,
+para la resolución de problemas \citep{banks1998handbook}.
+Siendo esta metodología descrita como "la técnica del ultimo recurso"
+por el autor \citep{garzia1986discrete},
+debido a la intensa demanda computacional
+que requería en el momento de su publicación,
+el transcurso de los años ha mermado esta desventaja.
+
+Diversos autores describen la simulación de la siguiente manera
+
+\begin{itemize}
+	\item ``Una simulación es
+	el establecimiento de un modelo lógico-matemático de un sistema
+	y la manipulación experimental de este en una computadora digital
+	\citep{pritsker1974gasp}''.   
+	\item ``La simulación es el proceso de diseñar
+		el modelo de un sistema real y realizar experimentos
+		con este modelo con el propósito de,
+		o bien,
+		entender el comportamiento del sistema,
+		o evaluar distintas estrategias
+		(dentro de los limites impuestos por un criterio
+		o conjunto de criterios)
+		para la operación del sistema'' \citep{shannon1976systems}.
+	\item ``Una simulación es la imitación de el modo de operación
+		de un proceso real o sistema durante el transcurso del tiempo''
+		\citep{banks1999introduction}.
+\end{itemize}
+
+Como se puede observar, el modelo,
+es un termino recurrente en el ámbito de la simulación.
+Banks sostiene que el modelo es la representación del sistema simulado
+\citep{banks1998handbook}.
+El autor matiza que la virtud de un modelo radica en su complejidad,
+siendo necesario el balance entre una representación ajustada,
+sin complicar en exceso el modelo.
+Por tanto, aquellos factores que no influyan lo suficiente
+en los resultados de la simulación, deberían ser eliminados,
+ya que únicamente extienden el proceso de desarrollo.
+
+El modelo, por tanto, constituye la base de la simulación,
+define las variables, y criterios para las decisiones tomadas en la simulación.
+Banks señala, la distinción entre un modelo matemático convencional
+y el modelo de una simulación \citep{banks1998handbook}.
+Los modelos matemáticos y estadísticos
+suelen representar las variables de manera explicita,
+relacionando variables independientes y variables dependientes
+para obtener un resultado.
+En el caso de una DES, el modelo utilizado se enfoca en
+la representación de sus componentes internos y sus interacciones..
+
+El funcionamiento de la DES, se basa en registrar los cambios
+que van ocurriendo en el estado del sistema durante el transcurso del tiempo.
+En el intervalo entre alternaciones de estado,
+ocurren el concepto de eventos, propios de esta rama de de simulación.
+Varga \citep{varga2001discrete} describe estos eventos como instantáneos,
+siendo la duración de los mismos nula.
+Durante el evento no ocurre nada especial,
+salvo la alteración del estado del sistema.
+Una sencilla representación de este concepto
+puede ser observada el la figura \ref{fig:2_basic_flow_des},
+donde el sistema representado es un coche.
+El coche posee 3 estados, los cuales se van sucediendo,
+durante el transcurso del tiempo.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics{2_basic_flow_des}
+	\end{center}
+	\caption{Representación del cambio de estado en una DES,
+	los rectángulos representan el estado del sistema,
+	mientras que las flechas indican el suceso de un evento instantáneo.}
+	\label{fig:2_basic_flow_des}
+\end{figure}
+
+\subsubsection{Terminologia y funcionamiento de una DES}\label{TF_DES}
+
+Para describir detalladamente este tipo de simulaciones,
+es necesario definir previamente algunos conceptos.
+Los siguientes conceptos
+son la sintesis de la informacion redactada por \citep{banks1998handbook}
+aplicados en el entorno de Python y su libreria Simpy.
+
+\begin{itemize}
+	\item Las variables del estado del sistema proporcionan informacion
+		acerca de el comportamiento de los procesos
+		que se llevan a cabo durante la simulacion.
+		Determinar las variables de estado que el programa debe retornar
+		depende de el objetivo del proyecto.
+		El programa debera ser diseñado entorno a ellas,
+		puesto que,seran usadas
+		para el posterior calculo de indicadores del rendimiento.
+		Un ejemplo, es el momento de inicio y fin de un subproceso.
+
+	\item Las entidades so los objetos representados por el modelo.
+		Se distinguen dos tipos de entidades,
+		las dinamicas y las estaticas.
+		Las primeras, avanzan en el sistema
+		a traves de los procesos simulados, 
+		mientras que las segundas, dan servicio a las primeras
+		permaneciendo ocupas en el proceso.
+		Considerando una gasolinera como sistema,
+		la entidad dinamica seria un coche repostando combustible,
+		mientras que la estatica, seria la estacion de repostaje.
+		Estos objetos pueden poseer atributos,
+		como el consumo de combustible o el tamaño de su deposito.
+		Dependiendo de el objetivo de la simulacion,
+		algunos atributos seran relevantes en diseño del modelo.
+	\item Un recurso es una entidad
+		que provee de servicio a una entidad dinamica.
+		Los recursos pueden servir a multiples entidades simultaneamente.
+		De manera similar, una entidad puede
+		solicitar varios tipos de recursos en distintas cantidades.
+		Si la demanda de una entidad no se satisface,
+		esta entrara en una cola,
+		a la espera de la liberacion del recurso.
+		Cuando la entidad tome el recurso,
+		lo mantendra ocupado durante la duracion del proceso.
+		Los recursos pueden tener varios estados,
+		como disponible, ocupado, averiado, en mantenimiento...
+	\item Una actividad es un periodo de tiempo,
+		el cual es conocido previo a su inicio.
+		Su duracion puede ser determinada de varias maneras;
+		mediante una constante, una distrubucion estadistica,
+		un resuldo de una ecuacion, un archivo o una decision logica.
+		El conocimiento de su duracion,
+		supone saber cuando un recurso sera liberado,
+		lo que facilita el trabajo de computacion.
+	\item Una demora es un periodo de espera indefinido
+		antes del comienzo de una actividad.
+		Este depende de la ejecucion
+		de el resto de actividades prioritarias,
+		por lo que el final de la espera no se puede determinar
+		mientras el recurso siga ocupado.
+	\item Un evento ocurre al principio y al final de una actividad o demora.
+		Marcan la transicion de el sistema de un estado a otro.
+\end{itemize}
+
+Considerando todos estos conceptos,
+las entidades del sistema compiten entre ellas por el uso de los recursos,
+si estos no se encuentran disponibles, quedan a la espera de poder solicitarlos.
+Tanto las actividades como las demoras reclaman estas entidades
+durante los intervalos entre eventos,
+siendo liberadas para el siguiente procesouna vez finalizado el periodo.
+Una DES, puede describirse como el avance de una entidad o conjunto de entidades
+a traves  de las actividades que modelan el proceso real.
+Este avance es accionado
+mediante el trancurso de tiempo virtual dentro de la simulacion.
+
+\subsubsection{Exposición de un caso ficticio usando una DES}
+
+Con el objetivo de ilustrar los conceptos descritos en la sección \ref{TF_DES}
+ demostrar la capacidad de resolución de problemas de la DES,
+ se ha procedido a emular un caso práctico.
+ omado como referencia el modelo descrito en la figura
+ \ref{fig:diagrama_basico_DES}, se ha redactado la siguiente problemática.
+
+ Supongase una jornada laboral
+ que comienza desde el amanecer y que finaliza al atardecer del mismo día.
+ Durante este periodo, varios individuos deciden
+ tomar el coche para desplazarse a distintos lugares.
+ La mayoria seran empleados
+ que se desplazara a su lugar de trabajo en horarios similares.
+ mientras que los demás serán conductores ocasionales
+ que usen su vehículo a lo largo del día repartidos de manera equitativa.
+ De esta población una fracción deseará repostar
+ en la gasolinera más cercana a el parking donde estacionaran sus vehículos.
+
+ El comportamiento del sistema descrito,
+ puede ser emulado mediante una DES aplicando las variables expuestas
+ en la tabla y el diagrama de la figura \ref{fig:simulation_example_diagram}.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{simulation_example_diagram}
+	\end{center}
+		\caption{Modelo de ejemplo para demostrar el funcionamiento de una DES.}
+		\label{fig:simulation_example_diagram}
+\end{figure}
+
+\subsubsection{Análisis DAFO}
+
+\subsubsection{Etapas de desarrollo de una DES}
+
+\begin{figure}
+	\begin{center}
+		\includegraphics{simulation_diagram}
+	\end{center}
+	\caption{Esquema del proceso de desarrollo de una DES.}
+	\label{fig:simulation_diagram}
+\end{figure}
